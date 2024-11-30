@@ -4,6 +4,7 @@ import Logo from "../../assets/evrazlogo.png";
 import { handleUploadFile } from "../../api";
 import "./Main.css";
 import { IRequestResponse } from "./types";
+import { DotLoader } from "react-spinners";
 
 export const Main = () => {
   const [api, contextHolder] = notification.useNotification();
@@ -122,7 +123,7 @@ export const Main = () => {
         )}
 
         <span className="buttons__block">
-          {selectedFiles.length > 0 && (
+          {selectedFiles.length > 0 && !isDataSended && (
             <div className="timeout__block">
               <span>Таймаут запроса в минутах: </span>
               <InputNumber
@@ -154,6 +155,8 @@ export const Main = () => {
             </Button>
           )}
 
+          {isDataSended && <DotLoader color="#F57F29" />}
+
           {selectedFiles.length > 0 && !isDataSended && (
             <Button
               className="button"
@@ -181,6 +184,7 @@ export const Main = () => {
       {requestResponse && requestResponse.pdf && (
         <iframe
           className="pdf__iframe"
+          title="Просмотр PDF документа"
           src={URL.createObjectURL(
             new Blob([requestResponse.pdf], { type: "application/pdf" })
           )}

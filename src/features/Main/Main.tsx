@@ -88,7 +88,7 @@ export const Main = () => {
         setDataSended(false);
 
         api.error({
-          message: `Осторожно!`,
+          message: `Ошибка!`,
           description: errorMessage,
           placement: "topLeft",
         });

@@ -14,8 +14,8 @@ export const handleUploadFile = async (
 
     formData.append("timeout", String(timeout));
 
-    const response = await axios.post<IRequestResponse>(
-      "http://localhost:8080/Review",
+    const response = await axios.post<any>(
+      "http://178.20.208.4:8080/Review",
       formData,
       {
         headers: {
@@ -24,7 +24,15 @@ export const handleUploadFile = async (
       }
     );
 
-    return handler(response.data);
+    const mdFile = await response.data[0];
+    const pdfFile = await response.data[1];
+
+    const responseData = {
+      pdf: pdfFile,
+      md: mdFile,
+    };
+
+    return handler(responseData);
   } catch (error) {
     console.log("Error uploading file:", error);
     errorHandler("Попробуйте ещё раз");

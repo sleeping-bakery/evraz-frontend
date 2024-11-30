@@ -51,7 +51,6 @@
 
     span {
       font-size: 24px;
-      margin-right: 16px;
     }
   }
 
@@ -60,7 +59,9 @@
     width: 80px;
     background: #171717;
     border: 1px solid #f57f29;
+
     border-radius: 0;
+    margin-left: 16px;
 
     input {
       color: white;

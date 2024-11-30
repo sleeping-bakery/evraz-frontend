@@ -153,7 +153,7 @@ export const Main = () => {
                 className="input__number"
                 min={5}
                 value={timeout}
-                max={60}
+                max={100}
                 onChange={(value) => setRequestTimeout(value || 15)}
               ></InputNumber>
             </div>

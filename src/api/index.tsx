@@ -15,8 +15,8 @@ export const handleUploadFile = async (
 
     formData.append("timeout", String(timeout));
 
-    const response = await axios.post<any>(
-      "https://api.arcanoom.xyz/Review",
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/Review`,
       formData,
       {
         headers: {

@@ -1,46 +1,38 @@
-# Getting Started with Create React App
+# EVRAZ Code Review Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Добро пожаловать в **EVRAZ Code Review Frontend**! Этот проект предназначен для того, чтобы предоставить пользователям удобный интерфейс для взаимодействия с системой автоматического Code Review.
 
-## Available Scripts
+## Требования
 
-In the project directory, you can run:
+Перед тем как запустить проект локально, убедитесь, что у вас установлены следующие инструменты:
 
-### `npm start`
+- **Docker** (для контейнеризации приложения)
+- **Docker Compose** (для управления многоконтейнерными приложениями)
+- **NPM 10.7.0 и NODEJS v20.15.1** (для разработки)
+- **Git** (для клонирования репозитория)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Начало работы
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Клонирование репозитория и запуск приложения
 
-### `npm test`
+Начните с того, чтобы клонировать репозиторий на свой локальный компьютер:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone https://github.com/sleeping-bakery/evraz-frontend.git
+cd evraz-frontend
+```
 
-### `npm run build`
+Заполните .env файл
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+REACT_APP_BACKEND_URL = 'СсылкаНаБэкенд'
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Запуск в режиме разработки
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. `npm install`
+2. `npm start`
 
-### `npm run eject`
+Запуск через докер
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+`docker compose up --build -d` в корневой директории

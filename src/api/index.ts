@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IRequestResponse } from "../features/Main/types";
+import { format } from "date-fns";
 
 export const handleUploadFile = async (
   files: File[],
@@ -15,7 +16,7 @@ export const handleUploadFile = async (
     formData.append("timeout", String(timeout));
 
     const response = await axios.post<any>(
-      "http://178.20.208.4:8080/Review",
+      "https://api.arcanoom.xyz/Review",
       formData,
       {
         headers: {
@@ -32,9 +33,13 @@ export const handleUploadFile = async (
     );
     const byteArrayPdf = new Uint8Array(byteNumbersPdf);
 
-    const pdfFileConverted = new File([byteArrayPdf], "REVIEW.pdf", {
-      type: "application/octet-stream",
-    });
+    const pdfFileConverted = new File(
+      [byteArrayPdf],
+      `REVIEW-from-${format(new Date(), "dd-MM-yyyy-hh-mm-ssss")}.pdf`,
+      {
+        type: "application/octet-stream",
+      }
+    );
 
     const mdFile = response.data[0];
 
@@ -44,9 +49,13 @@ export const handleUploadFile = async (
     );
     const byteArrayMd = new Uint8Array(byteNumbersMd);
 
-    const mdFileConverted = new File([byteArrayMd], "REVIEW.md", {
-      type: "text/markdown;charset=utf-8",
-    });
+    const mdFileConverted = new File(
+      [byteArrayMd],
+      `REVIEW-from-${format(new Date(), "dd-MM-yyyy-hh-mm-ssss")}.md`,
+      {
+        type: "text/markdown;charset=utf-8",
+      }
+    );
 
     const responseData = {
       pdf: pdfFileConverted,
@@ -55,6 +64,7 @@ export const handleUploadFile = async (
 
     return handler(responseData);
   } catch (error) {
+    console.log(error);
     errorHandler("Попробуйте ещё раз");
   }
 };

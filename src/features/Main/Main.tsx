@@ -119,6 +119,10 @@ export const Main = () => {
       downloadFile(requestResponse.pdf);
       downloadFile(requestResponse.md);
 
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+
       setRequestResponse(null);
       setSelectedFiles([]);
       setDataSended(false);

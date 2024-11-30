@@ -87,10 +87,10 @@
   }
 
   .pdf__iframe {
-    top: calc(188px + 60px);
+    top: calc(188px + 20px);
     bottom: 60px;
     width: 90%;
-    height: 75%;
+    height: 82.5%;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

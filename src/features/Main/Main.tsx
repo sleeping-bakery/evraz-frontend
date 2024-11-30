@@ -79,7 +79,6 @@ export const Main = () => {
       const requestHandler = (data: IRequestResponse | null) => {
         setRequestResponse(data);
         setSelectedFiles([]);
-        setRequestResponse(null);
         setDataSended(false);
         setRequestTimeout(15);
       };
@@ -105,34 +104,26 @@ export const Main = () => {
   };
 
   const handleDownloadResult = async (): Promise<void> => {
-    const filePdf = {
-      name: "REVIEW.pdf",
-      content: new Uint8Array([37, 80, 68, 70, 45, 49, 46, 52]),
-    };
+    if (requestResponse) {
+      const downloadFile = (file: File): void => {
+        const url = URL.createObjectURL(file);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = file.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      };
 
-    const fileMd = {
-      name: "REVIEW.md",
-      content: "# This is a Markdown file\n\n- Item 1\n- Item 2\n",
-    };
+      downloadFile(requestResponse.pdf);
+      downloadFile(requestResponse.md);
 
-    const downloadFile = (
-      fileName: string,
-      content: BlobPart,
-      mimeType: string
-    ): void => {
-      const blob = new Blob([content], { type: mimeType });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    };
-
-    downloadFile(filePdf.name, filePdf.content, "application/pdf");
-    downloadFile(fileMd.name, fileMd.content, "text/markdown");
+      setRequestResponse(null);
+      setSelectedFiles([]);
+      setDataSended(false);
+      setRequestTimeout(15);
+    }
   };
 
   return (

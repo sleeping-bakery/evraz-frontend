@@ -24,17 +24,37 @@ export const handleUploadFile = async (
       }
     );
 
-    const mdFile = await response.data[0];
-    const pdfFile = await response.data[1];
+    const pdfFile = response.data[1];
+
+    const byteCharactersPdf = atob(pdfFile.fileContentBase64);
+    const byteNumbersPdf = Array.from(byteCharactersPdf, (char) =>
+      char.charCodeAt(0)
+    );
+    const byteArrayPdf = new Uint8Array(byteNumbersPdf);
+
+    const pdfFileConverted = new File([byteArrayPdf], "REVIEW.pdf", {
+      type: "application/octet-stream",
+    });
+
+    const mdFile = response.data[0];
+
+    const byteCharactersMd = atob(mdFile.fileContentBase64);
+    const byteNumbersMd = Array.from(byteCharactersMd, (char) =>
+      char.charCodeAt(0)
+    );
+    const byteArrayMd = new Uint8Array(byteNumbersMd);
+
+    const mdFileConverted = new File([byteArrayMd], "REVIEW.md", {
+      type: "text/markdown;charset=utf-8",
+    });
 
     const responseData = {
-      pdf: pdfFile,
-      md: mdFile,
+      pdf: pdfFileConverted,
+      md: mdFileConverted,
     };
 
     return handler(responseData);
   } catch (error) {
-    console.log("Error uploading file:", error);
     errorHandler("Попробуйте ещё раз");
   }
 };

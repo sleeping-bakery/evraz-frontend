@@ -4,7 +4,8 @@ import { IRequestResponse } from "../features/Main/types";
 export const handleUploadFile = async (
   files: File[],
   timeout: number,
-  handler: (data: IRequestResponse | null) => void
+  handler: (data: IRequestResponse | null) => void,
+  errorHandler: (errorMessage: string) => void
 ) => {
   try {
     const formData = new FormData();
@@ -25,6 +26,7 @@ export const handleUploadFile = async (
 
     return handler(response.data);
   } catch (error) {
-    console.error("Error uploading file:", error);
+    console.log("Error uploading file:", error);
+    errorHandler("Попробуйте ещё раз");
   }
 };

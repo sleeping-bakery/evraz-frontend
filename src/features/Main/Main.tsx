@@ -36,6 +36,15 @@ export const Main = () => {
           }
         });
 
+        if (filesArray.length === 0) {
+          return api.error({
+            message: `Ошибка!`,
+            description:
+              "Выбрать можно либо один .zip файл, либо несколько .cs файлов.",
+            placement: "topLeft",
+          });
+        }
+
         setSelectedFiles(filesArray);
 
         if (dotNetFilesCount === 0) {
@@ -67,12 +76,31 @@ export const Main = () => {
 
   const handleUploadClick = async () => {
     if (selectedFiles) {
-      const pollingHandler = (data: IRequestResponse | null) => {
+      const requestHandler = (data: IRequestResponse | null) => {
         setRequestResponse(data);
+        setSelectedFiles([]);
+        setRequestResponse(null);
+        setDataSended(false);
+        setRequestTimeout(15);
+      };
+
+      const errorHandler = (errorMessage: string) => {
+        setDataSended(false);
+
+        api.error({
+          message: `Осторожно!`,
+          description: errorMessage,
+          placement: "topLeft",
+        });
       };
 
       setDataSended(true);
-      await handleUploadFile(selectedFiles, timeout, pollingHandler);
+      await handleUploadFile(
+        selectedFiles,
+        timeout,
+        requestHandler,
+        errorHandler
+      );
     }
   };
 
@@ -114,7 +142,7 @@ export const Main = () => {
       <div className="header">
         <img src={Logo} className="header__logo" alt="logo" />
 
-        {selectedFiles.length > 0 && (
+        {!requestResponse && selectedFiles.length > 0 && (
           <div className="file__name">
             {selectedFiles.map((itemFile) => (
               <p>{itemFile.name}</p>
@@ -123,7 +151,7 @@ export const Main = () => {
         )}
 
         <span className="buttons__block">
-          {selectedFiles.length > 0 && !isDataSended && (
+          {!requestResponse && selectedFiles.length > 0 && !isDataSended && (
             <div className="timeout__block">
               <span>Таймаут запроса в минутах: </span>
               <InputNumber
@@ -136,7 +164,7 @@ export const Main = () => {
             </div>
           )}
 
-          {selectedFiles.length === 0 && (
+          {!requestResponse && selectedFiles.length === 0 && (
             <Button
               className="button"
               onClick={() => {
@@ -149,15 +177,15 @@ export const Main = () => {
             </Button>
           )}
 
-          {selectedFiles.length > 0 && !isDataSended && (
+          {!requestResponse && selectedFiles.length > 0 && !isDataSended && (
             <Button className="button" onClick={handleUploadClick}>
               Отправить
             </Button>
           )}
 
-          {isDataSended && <DotLoader color="#F57F29" />}
+          {!requestResponse && isDataSended && <DotLoader color="#F57F29" />}
 
-          {selectedFiles.length > 0 && !isDataSended && (
+          {!requestResponse && selectedFiles.length > 0 && !isDataSended && (
             <Button
               className="button"
               onClick={() => {

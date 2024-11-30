@@ -8,6 +8,7 @@
 }
 
 body {
-  background: black;
+  background: url("./assets/background.jpg");
+  background-size: cover;
   color: white;
 }

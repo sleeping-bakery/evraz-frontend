@@ -1,42 +1,30 @@
 import axios from "axios";
+import { IRequestResponse } from "../features/Main/types";
 
-export const handleUploadFile = async (file: File) => {
+export const handleUploadFile = async (
+  files: File[],
+  timeout: number,
+  handler: (data: IRequestResponse | null) => void
+) => {
   try {
     const formData = new FormData();
-    formData.append("file", file);
 
-    const response = await axios.post<string>("url", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    files.forEach((file) => formData.append("file", file));
 
-    return response.data;
+    formData.append("timeout", String(timeout));
+
+    const response = await axios.post<IRequestResponse>(
+      "http://localhost:8080/Review",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return handler(response.data);
   } catch (error) {
     console.error("Error uploading file:", error);
   }
-};
-
-export const startPolling = async (id: string, handler: any): Promise<void> => {
-  const ms = 5000;
-
-  const poll = async (): Promise<void> => {
-    try {
-      const response = await axios.get<{ status: string; data?: any }>(
-        `/api/resource/${id}`
-      );
-
-      if (response.data.status === "completed") {
-        handler(response.data.data);
-        return;
-      }
-
-      setTimeout(poll, ms);
-    } catch (error) {
-      console.error("Error during polling:", error);
-      setTimeout(poll, ms);
-    }
-  };
-
-  poll();
 };

@@ -15,15 +15,17 @@ export const handleUploadFile = async (
 
     formData.append("timeout", String(timeout));
 
-    const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/Review`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    // Определяем маршрут в зависимости от количества файлов
+    const endpoint =
+      files.length > 1
+        ? `${process.env.REACT_APP_BACKEND_URL}/Review/Multiple`
+        : `${process.env.REACT_APP_BACKEND_URL}/Review`;
+
+    const response = await axios.post(endpoint, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     const pdfFile = response.data[1];
 

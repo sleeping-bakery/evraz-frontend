@@ -151,7 +151,7 @@ export const Main = () => {
               <span>Таймаут запроса в минутах: </span>
               <InputNumber
                 className="input__number"
-                min={5}
+                min={1}
                 value={timeout}
                 max={100}
                 onChange={(value) => setRequestTimeout(value || 15)}
